@@ -8,7 +8,7 @@ class Password {
   String get password => _password;
 
   set password(String newPassword) {
-    _password = newPassword;
+    _password = newPassword
   }
 
   bool isValid() {
@@ -25,6 +25,6 @@ class Password {
 
     @override
   String toString() {
-    return 'Your password is: $_password';
+    return 'Your Password is: $_password';
   }
 }
