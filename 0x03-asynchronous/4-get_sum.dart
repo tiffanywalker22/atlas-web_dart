@@ -10,7 +10,7 @@ Future<double> calculateTotal() async {
     double totalPrice = 0.0;
 
     if (orders.isEmpty) {
-      return -1
+      return 0.0;
     }
 
     for (var product in orders) {
