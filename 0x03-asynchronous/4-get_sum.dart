@@ -1,11 +1,17 @@
 import 'dart:convert';
 import '4-util.dart';
 
-
 Future<double> calculateTotal() async {
   try {
-    var user = json.decode(await fetchUserData());
-    var orders = json.decode(await fetchUserOrders(user['id'])) ?? [];
+    var userResponse = await fetchUserData();
+    var user = json.decode(userResponse);
+
+    if (user == null || !user.containsKey('id')) {
+      throw Exception('Invalid user data');
+    }
+
+    var ordersResponse = await fetchUserOrders(user['id']);
+    var orders = json.decode(ordersResponse) ?? [];
 
     double totalPrice = 0.0;
 
@@ -14,8 +20,14 @@ Future<double> calculateTotal() async {
     }
 
     for (var product in orders) {
-      var productPrice = json.decode(await fetchProductPrice(product));
-      totalPrice += productPrice ?? 0.0;
+      var productPriceResponse = await fetchProductPrice(product);
+      var productPrice = json.decode(productPriceResponse);
+
+      if (productPrice == null) {
+        throw Exception('Invalid product price for $product');
+      }
+
+      totalPrice += productPrice;
     }
 
     return totalPrice;
